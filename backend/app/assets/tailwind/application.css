@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --color-admin-paper: #f4f7f3;
+  --color-admin-stripe: #e2eee6;
+  --color-admin-card: #ffffff;
+  --color-admin-ink: #17231d;
+  --color-admin-ink-muted: #5c6b61;
+  --color-admin-rule: #c9d6cc;
+  --color-admin-accent: #1f7a53;
+  --color-admin-accent-strong: #14563a;
+  --color-admin-error: #a83a2e;
+}
+
+.form-label {
+  @apply mb-1.5 block font-mono text-xs font-medium tracking-widest text-admin-ink-muted uppercase;
+}
+
+.form-input {
+  @apply w-full border-0 border-b border-admin-rule bg-transparent px-0.5 py-2 text-base text-admin-ink;
+  @apply focus:border-admin-accent focus:outline-none;
+  @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-admin-accent;
+}
+
+.form-submit {
+  @apply w-full cursor-pointer border-0 bg-admin-accent px-4 py-3 font-mono text-xs font-semibold;
+  @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-admin-ink;
+  @apply tracking-widest text-white uppercase transition-colors hover:bg-admin-accent-strong;
+}

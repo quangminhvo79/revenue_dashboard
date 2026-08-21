@@ -1,0 +1,56 @@
+<%#
+# Application Layout
+
+This view template is used as the layout
+for every page that Administrate generates.
+
+By default, it renders:
+- Navigation
+- Content for a search bar
+  (if provided by a `content_for` block in a nested page)
+- Flashes
+- Links to stylesheets and JavaScripts
+%>
+
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+<head>
+  <meta charset="utf-8">
+  <meta name="ROBOTS" content="NOODP">
+  <meta name="viewport" content="initial-scale=1">
+  <title>
+    <%= content_for(:title) %> - <%= application_title %>
+  </title>
+  <%= render "stylesheet" %>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag if defined?(csp_meta_tag) %>
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= render "javascript" %>
+</head>
+<body>
+  <%= render "icons" %>
+
+  <div class="flex items-center justify-between gap-4 bg-admin-accent px-6 py-4 font-mono text-slate-200!">
+    <%= link_to "Revenue Dashboard Admin", admin_root_path, class: "text-xs font-semibold text-slate-200! tracking-widest uppercase" %>
+
+    <% if user_signed_in? %>
+      <div class="flex items-center gap-4 text-xs">
+        <span class="text-slate-200!">
+          <%= current_user.email %>
+          <span class="text-orange-200! uppercase"> · <%= current_user.role_name %></span>
+        </span>
+        <%= button_to "Log out", destroy_user_session_path, method: :delete,
+            class: "cursor-pointer border border-admin-rule bg-transparent px-3 py-1.5 tracking-wide text-admin-ink-muted uppercase transition-colors hover:border-admin-error hover:text-admin-error" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="app-container p-0!">
+    <%= render "navigation" -%>
+
+    <main class="main-content">
+      <%= render "flashes" -%>
+      <%= yield %>
+    </main>
+  </div>
+</body>
+</html>

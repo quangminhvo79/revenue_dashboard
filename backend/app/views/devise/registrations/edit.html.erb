@@ -1,0 +1,48 @@
+<%= render "devise/shared/form_code", code: "Form RG·02 — Account settings", title: "Edit #{resource_name.to_s.humanize}" %>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="mb-5">
+    <%= f.label :email, class: "form-label" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-input" %>
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div class="mb-5 text-sm text-admin-ink-muted">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div class="mb-5">
+    <%= f.label :password, class: "form-label" %>
+    <p class="mb-1.5 text-sm text-admin-ink-muted">Leave blank if you don't want to change it</p>
+    <%= f.password_field :password, autocomplete: "new-password", class: "form-input" %>
+    <% if @minimum_password_length %>
+      <p class="mt-1.5 text-sm text-admin-ink-muted"><%= @minimum_password_length %> characters minimum</p>
+    <% end %>
+  </div>
+
+  <div class="mb-5">
+    <%= f.label :password_confirmation, class: "form-label" %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input" %>
+  </div>
+
+  <div class="mb-5">
+    <%= f.label :current_password, class: "form-label" %>
+    <p class="mb-1.5 text-sm text-admin-ink-muted">We need your current password to confirm your changes</p>
+    <%= f.password_field :current_password, autocomplete: "current-password", class: "form-input" %>
+  </div>
+
+  <div class="mt-7">
+    <%= f.submit "Update", class: "form-submit" %>
+  </div>
+<% end %>
+
+<div class="mt-8 border-t border-dashed border-admin-rule pt-6">
+  <h3 class="mb-2 font-mono text-xs font-semibold tracking-widest text-admin-error uppercase">Cancel my account</h3>
+  <div class="mb-2.5 text-sm text-admin-ink-muted">Unhappy? You can permanently delete your account.</div>
+  <%= button_to "Cancel my account", registration_path(resource_name),
+      data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete,
+      class: "cursor-pointer border border-admin-error bg-transparent px-3.5 py-2 font-mono text-xs tracking-wide text-admin-error uppercase transition-colors hover:bg-admin-error hover:text-white" %>
+</div>
+
+<%= link_to "Back", :back, class: "mt-4 inline-block text-sm text-admin-ink-muted underline decoration-admin-rule underline-offset-4 hover:text-admin-accent-strong hover:decoration-admin-accent" %>

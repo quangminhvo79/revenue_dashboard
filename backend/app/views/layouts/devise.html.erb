@@ -23,9 +23,18 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 flex justify-center px-5">
-      <%= yield %>
-    </main>
+  <body class="min-h-screen font-sans text-admin-ink bg-[repeating-linear-gradient(var(--color-admin-paper)_0,var(--color-admin-paper)_2.4rem,var(--color-admin-stripe)_2.4rem,var(--color-admin-stripe)_4.8rem)]">
+    <div class="flex min-h-screen flex-col">
+      <header class="flex items-baseline justify-between gap-4 border-b border-admin-rule px-6 py-4 font-mono">
+        <span class="text-xs font-semibold uppercase tracking-[0.16em]">Revenue Dashboard Admin</span>
+        <span class="text-[0.7rem] uppercase tracking-[0.08em] text-admin-ink-muted"><%= Date.current.strftime("%d %b %Y") %></span>
+      </header>
+
+      <main class="flex flex-1 items-center justify-center px-5 py-10">
+        <div class="w-full max-w-105 border border-admin-ink bg-admin-card p-7 pb-8 shadow-[7px_7px_0_var(--color-admin-stripe)] sm:p-9">
+          <%= yield %>
+        </div>
+      </main>
+    </div>
   </body>
 </html>

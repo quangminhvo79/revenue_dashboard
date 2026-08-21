@@ -63,3 +63,11 @@ group :test do
 end
 
 gem "rack-cors", "~> 3.0"
+
+gem "devise", "~> 5.0"
+
+gem "pundit", "~> 2.5"
+
+gem "administrate", "~> 1.0"
+
+gem "tailwindcss-rails"
