@@ -35,11 +35,33 @@ Order.where(date: month_start.beginning_of_day..month_end.end_of_day).destroy_al
   rand(3..8).times do
     Order.create!(
       user: users.sample,
-      total_cost: rand(50_000..2_000_000).to_f.round(-3),
+      total_cost: rand(50..500).to_f.round(-3),
       area: Order.areas.keys.sample,
       status: Order.statuses.keys.sample,
       date: day.to_time + rand(8..22).hours + rand(0..59).minutes,
       covers: rand(1..4)
+    )
+  end
+end
+
+shifts = {
+  "morning" => 90,
+  "afternoon" => 120,
+  "evening" => 150,
+}.map { |name, wage| Shift.find_or_create_by!(name: name) { |shift| shift.wage = wage } }
+
+staff_users = User.joins(:role).where(roles: { name: "staff" }).to_a
+
+Timesheet.where(work_date: month_start.beginning_of_day..month_end.end_of_day).destroy_all
+
+(month_start..month_end).each do |day|
+  staff_users.each do |user|
+    next if rand < 0.2
+
+    Timesheet.create!(
+      user: user,
+      shift: shifts.sample,
+      work_date: day
     )
   end
 end

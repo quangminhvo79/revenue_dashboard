@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_08_22_024542) do
+ActiveRecord::Schema[8.0].define(version: 2026_08_22_131522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,22 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_22_024542) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "shifts", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "wage", default: 1, null: false
+  end
+
+  create_table "timesheets", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "shift_id"
+    t.datetime "work_date", null: false
+    t.integer "wage_at_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shift_id"], name: "index_timesheets_on_shift_id"
+    t.index ["user_id"], name: "index_timesheets_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

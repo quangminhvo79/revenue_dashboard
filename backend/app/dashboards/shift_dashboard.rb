@@ -1,32 +1,29 @@
 require "administrate/base_dashboard"
 
-class RoleDashboard < Administrate::BaseDashboard
+class ShiftDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
-    id: Field::Number,
     name: Field::String,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    wage: Field::Number,
   }.freeze
 
   COLLECTION_ATTRIBUTES = %i[
-    id
     name
+    wage
   ].freeze
 
   SHOW_PAGE_ATTRIBUTES = %i[
-    id
     name
-    created_at
-    updated_at
+    wage
   ].freeze
 
   FORM_ATTRIBUTES = %i[
     name
+    wage
   ].freeze
 
   COLLECTION_FILTERS = {}.freeze
 
-  def display_resource(role)
-    role.name.titlecase
+  def display_resource(shift)
+    shift.name.titlecase
   end
 end

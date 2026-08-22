@@ -6,6 +6,9 @@ Rails.application.routes.draw do
         post :mark_all_completed, on: :collection
       end
 
+      resources :timesheets
+      resources :shifts
+
       root to: "users#index"
     end
   devise_for :users, failure_app: ApiFailureApp
