@@ -4,16 +4,18 @@ class OrderDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     user: Field::BelongsTo,
     total_cost: Field::Number,
-    area: Field::String,
-    datetime: Field::DateTime,
-    status: Field::String,
+    area: Field::Select.with_options(collection: ::Order.areas.keys),
+    date: Field::DateTime,
+    covers: Field::Number,
+    status: Field::Select.with_options(collection: ::Order.statuses.keys),
   }.freeze
 
   COLLECTION_ATTRIBUTES = %i[
     user
     total_cost
     area
-    datetime
+    date
+    covers
     status
   ].freeze
 
@@ -21,7 +23,8 @@ class OrderDashboard < Administrate::BaseDashboard
     user
     total_cost
     area
-    datetime
+    date
+    covers
     status
   ].freeze
 
@@ -29,7 +32,8 @@ class OrderDashboard < Administrate::BaseDashboard
     user
     total_cost
     area
-    datetime
+    date
+    covers
     status
   ].freeze
 

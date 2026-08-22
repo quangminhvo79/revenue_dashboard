@@ -39,6 +39,7 @@ Order.where(date: month_start.beginning_of_day..month_end.end_of_day).destroy_al
       area: Order.areas.keys.sample,
       status: Order.statuses.keys.sample,
       date: day.to_time + rand(8..22).hours + rand(0..59).minutes,
+      covers: rand(1..4)
     )
   end
 end

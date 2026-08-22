@@ -2,11 +2,13 @@ Rails.application.routes.draw do
   namespace :admin do
       resources :users
       resources :roles
-      resources :orders
+      resources :orders do
+        post :mark_all_completed, on: :collection
+      end
 
       root to: "users#index"
     end
-  devise_for :users
+  devise_for :users, failure_app: ApiFailureApp
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -17,7 +19,15 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  namespace :api do
+    devise_scope :user do
+      post "login", to: "sessions#create"
+      delete "logout", to: "sessions#destroy"
+    end
 
+    resources :orders, only: [:index]
+    resource :dashboard, only: [:show], controller: "dashboard"
+  end
   # Defines the root path route ("/")
   root to: "home#index"
 end
