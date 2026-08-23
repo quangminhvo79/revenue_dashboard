@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     devise_scope :user do
       post "login", to: "sessions#create"
       delete "logout", to: "sessions#destroy"
+      get "me", to: "sessions#me"
+      post "refresh", to: "sessions#refresh"
     end
 
     resources :orders, only: [:index]

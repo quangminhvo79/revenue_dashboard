@@ -35,7 +35,7 @@ Order.where(date: month_start.beginning_of_day..month_end.end_of_day).destroy_al
   rand(3..8).times do
     Order.create!(
       user: users.sample,
-      total_cost: rand(50..500).to_f.round(-3),
+      total_cost: rand(50..500).to_f.round(2),
       area: Order.areas.keys.sample,
       status: Order.statuses.keys.sample,
       date: day.to_time + rand(8..22).hours + rand(0..59).minutes,

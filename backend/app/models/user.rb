@@ -8,6 +8,7 @@ class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   belongs_to :role
+  has_many :refresh_tokens, dependent: :destroy
 
   delegate :admin?, to: :role, allow_nil: true, prefix: false
   delegate :manager?, to: :role, allow_nil: true, prefix: false
