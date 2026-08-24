@@ -25,22 +25,18 @@ export function Summaries({
   });
 
   const totalRevenue = useMemo(() => {
-    if (currentWeekData)
-      if (showEatclub && showPos)
-        return currentWeekData?.eatclub + currentWeekData?.pos;
-      else if (showEatclub)
-        return currentWeekData?.eatclub;
-      else return currentWeekData?.pos;
+    if (!currentWeekData) return 0;
+    if (showEatclub && showPos) return currentWeekData.eatclub + currentWeekData.pos;
+    if (showEatclub) return currentWeekData.eatclub;
+    if (showPos) return currentWeekData.pos;
     return 0;
   }, [currentWeekData, showEatclub, showPos])
 
   const totalPrevRevenue = useMemo(() => {
-    if (previousWeekData)
-      if (showEatclub && showPos)
-        return previousWeekData?.eatclub + previousWeekData?.pos;
-      else if (showEatclub)
-        return previousWeekData?.eatclub;
-      else return previousWeekData?.pos;
+    if (!previousWeekData) return 0;
+    if (showEatclub && showPos) return previousWeekData.eatclub + previousWeekData.pos;
+    if (showEatclub) return previousWeekData.eatclub;
+    if (showPos) return previousWeekData.pos;
     return 0;
   }, [previousWeekData, showEatclub, showPos])
 
@@ -51,9 +47,11 @@ export function Summaries({
       laborCostChange: 0
     };
 
+    const totalRevenueChange = calculatePercentageChange(totalRevenue, totalPrevRevenue);
+
     return {
-      totalRevenueChange: calculatePercentageChange(totalRevenue, totalPrevRevenue),
-      averagePerDayChange: calculatePercentageChange(totalRevenue/7, totalPrevRevenue/7),
+      totalRevenueChange,
+      averagePerDayChange: totalRevenueChange,
       laborCostChange: calculatePercentageChange(currentWeekData?.totalCovers ?? 0, previousWeekData?.totalCovers ?? 0),
     }
   }, [previousWeekData?.totalCovers, showPrevious, totalPrevRevenue, totalRevenue, currentWeekData?.totalCovers])
@@ -69,7 +67,7 @@ export function Summaries({
               <span>vs</span>
               <span>${formatNumber(totalPrevRevenue)}</span>
               <span className={percentageChangeClassName(percentageChanges.totalRevenueChange)}>
-                ({`${percentageChanges.totalRevenueChange > 0 ? '+' : '-'}${formatNumber(percentageChanges.totalRevenueChange)}`}%)
+                ({`${percentageChanges.totalRevenueChange > 0 ? '+' : ''}${formatNumber(percentageChanges.totalRevenueChange)}`}%)
               </span>
             </div>
           )}
@@ -84,7 +82,7 @@ export function Summaries({
               <span>vs</span>
               <span>${formatNumber(totalPrevRevenue/7)}</span>
               <span className={percentageChangeClassName(percentageChanges.averagePerDayChange)}>
-                ({`${percentageChanges.averagePerDayChange > 0 ? '+' : '-'}${formatNumber(percentageChanges.averagePerDayChange)}`}%)
+                ({`${percentageChanges.averagePerDayChange > 0 ? '+' : ''}${formatNumber(percentageChanges.averagePerDayChange)}`}%)
               </span>
             </div>
           )}
@@ -99,7 +97,7 @@ export function Summaries({
               <span>vs</span>
               <span>{formatNumber(previousWeekData?.totalCovers || 0)}</span>
               <span className={percentageChangeClassName(percentageChanges.laborCostChange)}>
-                ({`${percentageChanges.laborCostChange > 0 ? '+' : '-'}${formatNumber(percentageChanges.laborCostChange)}`}%)
+                ({`${percentageChanges.laborCostChange > 0 ? '+' : ''}${formatNumber(percentageChanges.laborCostChange)}`}%)
               </span>
             </div>
           )}

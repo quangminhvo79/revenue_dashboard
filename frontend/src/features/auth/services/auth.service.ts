@@ -1,3 +1,4 @@
+import camelcaseKeys from 'camelcase-keys';
 import { apiClient } from "@/lib/api/client";
 import type { ApiRequestConfig } from "@/lib/api/types";
 
@@ -14,18 +15,13 @@ export const authService = {
   async login(payload: LoginPayload): Promise<LoginResponse> {
     const response = await apiClient.post("/login", payload, skipAuthRefresh);
 
-    return {
-      user: response.data.user,
-      accessToken: response.data.access_token,
-    };
+    return camelcaseKeys(response.data, { deep: true });
   },
 
   async refresh(): Promise<RefreshResponse> {
     const response = await apiClient.post("/refresh", undefined, skipAuthRefresh);
 
-    return {
-      accessToken: response.data.access_token,
-    };
+    return camelcaseKeys(response.data, { deep: true });
   },
 
   async logout(): Promise<void> {
@@ -34,6 +30,6 @@ export const authService = {
 
   async me(): Promise<AuthUser> {
     const response = await apiClient.get("/me");
-    return response.data.user;
+    return camelcaseKeys(response.data.user, { deep: true });
   },
 };

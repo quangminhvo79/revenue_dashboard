@@ -10,7 +10,9 @@ module Api
     private
 
     def deny_access
-      render json: { message: 'You are not authorized to perform this action.' }
+      render json: {
+        message: "You are not authorized to perform this action."
+      }, status: :forbidden
     end
   end
 end

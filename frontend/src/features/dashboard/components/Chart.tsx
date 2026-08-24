@@ -82,8 +82,6 @@ export function Chart({
     }
   }, [showPrevious])
 
-  if (!chartData) return null;
-
   return (
     <>
       <ChartContainer config={chartConfig} className="w-full flex-1 min-h-0 pt-10">
@@ -97,7 +95,6 @@ export function Chart({
             tickFormatter={(value) => value.slice(0, 3)}
           />
           <YAxis
-            dataKey="pos"
             tickLine={false}
             tickMargin={10}
             axisLine={false}
