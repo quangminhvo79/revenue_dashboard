@@ -31,7 +31,9 @@ Rails.application.routes.draw do
     end
 
     resources :orders, only: [:index]
-    resource :dashboard, only: [:show], controller: "dashboard"
+    resource :dashboard, only: [], controller: "dashboard" do
+      get :weekly_revenue
+    end
   end
   # Defines the root path route ("/")
   root to: "home#index"

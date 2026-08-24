@@ -5,5 +5,5 @@ class DashboardPolicy < ApplicationPolicy
     @user = user
   end
 
-  def show? = user.admin?
+  def weekly_revenue? = user.admin?
 end

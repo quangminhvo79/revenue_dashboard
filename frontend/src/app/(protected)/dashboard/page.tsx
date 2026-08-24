@@ -1,13 +1,11 @@
 'use client'
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { DownloadIcon, ChartColumnIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 
-import Chart from './Chart'
-import Summaries from './Summaries'
-
+import { Chart, Summaries, useWeeklyRevenue, type WeeklyRevenue } from '@/features/dashboard';
 
 const chartData = [
   { month: "January", desktop: 186, desktop_a: 40, mobile: 80 },
@@ -21,9 +19,16 @@ const chartData = [
 
 export default function Dashboard() {
   const [isCompared, setIsCompared] = useState(false)
-  const [posRevenueChecked, setPosRevenueChecked] = useState(false)
-  const [eatclubRevenueChecked, setEatclubRevenueChecked] = useState(false)
-  const [laborCostChecked, setLaborCostChecked] = useState(false)
+  const [showPosRevenue, setShowPosRevenue] = useState(true)
+  const [showEatclubRevenue, setShowEatclubRevenue] = useState(true)
+  const [showLaborCost, setShowLaborCost] = useState(true)
+
+  const compareBtnCls = useMemo(() => {
+    return (isCompared ?
+      'bg-gray-800 hover:bg-gray-600 text-white rounded-full' :
+      'bg-white hover:bg-gray-200 text-gray-800 border-gray-800 rounded-full'
+    )
+  }, [isCompared])
 
   return (
     <div className="w-full flex flex-col flex-1 p-6 bg-gray-50">
@@ -35,23 +40,23 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             <label className="text-gray-600 font-semibold flex items-center gap-2">
               <Checkbox
-                checked={posRevenueChecked}
-                onCheckedChange={setPosRevenueChecked}
+                checked={showPosRevenue}
+                onCheckedChange={setShowPosRevenue}
               />
               <span className="w-3 inline-block border border-gray-800"></span>
               POS Revenue
             </label>
             <label className="text-gray-600 font-semibold flex items-center gap-2">
-              <Checkbox checked={eatclubRevenueChecked} onCheckedChange={setEatclubRevenueChecked} />
+              <Checkbox checked={showEatclubRevenue} onCheckedChange={setShowEatclubRevenue} />
               <span className="w-3 inline-block border border-gray-800"></span>
               Eatclub Revenue
             </label>
             <label className="text-gray-600 font-semibold flex items-center gap-2">
-              <Checkbox checked={laborCostChecked} onCheckedChange={setLaborCostChecked} />
+              <Checkbox checked={showLaborCost} onCheckedChange={setShowLaborCost} />
               <span className="w-3 inline-block border border-gray-800"></span>
               Labour Costs
             </label>
-            <Button className="bg-gray-800 rounded-full">
+            <Button className={compareBtnCls} onClick={() => setIsCompared(!isCompared)}>
               <ChartColumnIcon />
               Compare to Previous
             </Button>
@@ -63,10 +68,20 @@ export default function Dashboard() {
         </div>
 
         <div className="mt-10">
-          <Summaries />
+          <Summaries
+            showPrevious={isCompared}
+            showPos={showPosRevenue}
+            showEatclub={showEatclubRevenue}
+            showLaborCost={showLaborCost}
+          />
         </div>
 
-        <Chart chartData={chartData} />
+        <Chart
+          showPrevious={isCompared}
+          showPos={showPosRevenue}
+          showEatclub={showEatclubRevenue}
+          showLaborCost={showLaborCost}
+        />
       </div>
     </div>
   )
