@@ -18,7 +18,7 @@ cd revenue_dashboard
 
 | Tool | Version | Used by |
 |---|---|---|
-| [Ruby](https://www.ruby-lang.org) | `3.3.3` | backend |
+| [Ruby](https://www.ruby-lang.org) | `3.4.10` | backend |
 | [PostgreSQL](https://www.postgresql.org) | `>= 9.3` (16+ recommended) | backend |
 | [Node.js](https://nodejs.org) | `24.10.0` | frontend |
 | [Yarn Classic](https://classic.yarnpkg.com) | `1.x` | frontend |
@@ -34,12 +34,19 @@ bundle install
 bin/rails db:prepare
 bin/rails server
 
+# Unit Test
+bundle exec rspec
+
 # Terminal 2 — frontend on http://localhost:3001
 cd frontend
 yarn install
 cp .env.example .env.local
 yarn dev
+
+# E2E test
+yarn test:e2e
 ```
+
 
 Open **http://localhost:3001** in your browser. The frontend calls the backend API, and CORS is already configured to allow requests from `http://localhost:3001` (see `backend/config/initializers/cors.rb`).
 

@@ -18,14 +18,14 @@ Backend API for the [Revenue Dashboard](../README.md) project, built with [Ruby 
 
 | Requirement | Version | Notes |
 |---|---|---|
-| Ruby | `3.3.3` | Pinned in `.ruby-version`. Use any version manager ([asdf](https://asdf-vm.com), [rbenv](https://github.com/rbenv/rbenv), [rvm](https://rvm.io)) or [install directly](https://www.ruby-lang.org/en/documentation/installation/) |
+| Ruby | `3.4.10` | Pinned in `.ruby-version`. Use any version manager ([asdf](https://asdf-vm.com), [rbenv](https://github.com/rbenv/rbenv), [rvm](https://rvm.io)) or [install directly](https://www.ruby-lang.org/en/documentation/installation/) |
 | PostgreSQL | `>= 9.3` (16+ recommended) | Install via Homebrew: `brew install postgresql@16`, or your OS's package manager |
 | Bundler | matches `Gemfile.lock` | Install via `gem install bundler` |
 
 Check before you start:
 
 ```bash
-ruby -v      # ruby 3.3.3
+ruby -v      # ruby 3.4.10
 psql --version
 bundle -v
 ```
@@ -92,42 +92,9 @@ bin/rails db:reset     # drop + recreate + seed
 | `bin/rubocop` | Style check (Omakase) |
 | `bin/brakeman` | Static security vulnerability scan |
 
-## Connecting to the frontend
-
-The Next.js frontend runs at `http://localhost:3001` and calls this API at `http://localhost:3000`. Since these are different origins, CORS is enabled via `rack-cors` in `config/initializers/cors.rb`, which allows `http://localhost:3001` by default:
-
-```ruby
-# config/initializers/cors.rb
-Rails.application.config.middleware.insert_before 0, Rack::Cors do
-  allow do
-    origins ENV.fetch("CORS_ORIGINS", "http://localhost:3001").split(",")
-
-    resource "*",
-      headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
-  end
-end
-```
-
-To allow additional origins (e.g. a deployed frontend URL), set the `CORS_ORIGINS` env var as a comma-separated list:
-
-```bash
-CORS_ORIGINS=http://localhost:3001,https://app.example.com
-```
-
 ## Troubleshooting
 
 - **`FATAL: role "..." does not exist` / Postgres authentication errors** — `config/database.yml` uses your OS user as the default Postgres role in development. Either create a matching role (`createuser -s $(whoami)`) or set `username`/`password`/`host` in `config/database.yml` to match your local Postgres setup.
 - **`Missing encryption key to decrypt file...`** — `config/master.key` is missing. See the [Credentials](#credentials) section above.
 - **`Address already in use - bind(2) for "127.0.0.1" port 3000`** — another process is using port 3000. Stop it, or run `bin/rails server -p 3002` (and update `NEXT_PUBLIC_API_URL` / `CORS_ORIGINS` to match).
 - **`bundle install` fails on the `pg` gem** — make sure PostgreSQL's dev headers are available, e.g. `brew install postgresql@16` on macOS, or `libpq-dev` on Debian/Ubuntu.
-
-## Deployment
-
-Deployed via [Kamal](https://kamal-deploy.org), configured in `config/deploy.yml` with secrets in `.kamal/secrets`.
-
-```bash
-bin/kamal deploy
-```
-
-> `config/deploy.yml` currently holds placeholder values (`your-user/backend`, `app.example.com`) — fill in real server/registry details before your first deploy.
