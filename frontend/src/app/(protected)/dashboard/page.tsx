@@ -5,7 +5,7 @@ import { DownloadIcon, ChartColumnIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 
-import { Chart, Summaries, useWeeklyRevenue, type WeeklyRevenue } from '@/features/dashboard';
+import { Chart, Summaries } from '@/features/dashboard';
 
 const chartData = [
   { month: "January", desktop: 186, desktop_a: 40, mobile: 80 },

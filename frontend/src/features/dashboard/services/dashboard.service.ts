@@ -1,9 +1,9 @@
 import camelcaseKeys from 'camelcase-keys';
 import { apiClient } from "@/lib/api/client";
-import { type WeeklyRevenue } from "../types/dashboard.type";
+import { type WeeklyRevenueResponse } from "../types/dashboard.type";
 
 export const dashboardService = {
-  async getWeeklyRevenue(endDate: Date | undefined): Promise<WeeklyRevenue> {
+  async getWeeklyRevenue(endDate: Date | undefined): Promise<WeeklyRevenueResponse> {
     const response = await apiClient.get("/dashboard/weekly_revenue", {
       params: {
         end_date: endDate

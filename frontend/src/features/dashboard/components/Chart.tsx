@@ -1,14 +1,15 @@
 'use client'
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { TrendingUp, TrendingDown } from "lucide-react"
 import {
   ChartContainer,
-  type ChartConfig,
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent
 } from "@/components/ui/chart"
+import EventImpactMarkers from "./EventImpactMarkers"
 import { type WeeklyRevenueProps } from '@/features/dashboard/types/dashboard.type'
 import { useWeeklyRevenue } from '@/features/dashboard'
 import { useMemo } from "react"
@@ -84,37 +85,58 @@ export function Chart({
   if (!chartData) return null;
 
   return (
-    <ChartContainer config={chartConfig} className="w-full flex-1 min-h-0 pt-10">
-      <BarChart accessibilityLayer data={chartData}>
-        <CartesianGrid />
-        <XAxis
-          dataKey="weekday"
-          tickLine={false}
-          tickMargin={10}
-          axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
-        />
-        <YAxis
-          dataKey="pos"
-          tickLine={false}
-          tickMargin={10}
-          axisLine={false}
-        />
-        <ChartTooltip content={<ChartTooltipContent />} />
-        <ChartLegend content={<ChartLegendContent className="text-base flex-wrap"/>} />
+    <>
+      <ChartContainer config={chartConfig} className="w-full flex-1 min-h-0 pt-10">
+        <BarChart accessibilityLayer data={chartData}>
+          <CartesianGrid />
+          <XAxis
+            dataKey="weekday"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tickFormatter={(value) => value.slice(0, 3)}
+          />
+          <YAxis
+            dataKey="pos"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            padding={{ top: 40 }}
+          />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <ChartLegend content={<ChartLegendContent className="text-base flex-wrap"/>} />
 
-        <Bar dataKey="pos" fill="var(--color-pos)" stackId="current" radius={showEatclub ? [0,0,4,4] : 4} hide={!showPos} />
-        <Bar dataKey="eatclub" fill="var(--color-eatclub)" stackId="current" radius={showPos ? [4,4,0,0] : 4} hide={!showEatclub} />
-        <Bar dataKey="laborCost" fill="var(--color-laborCost)" radius={4} hide={!showLaborCost} />
+          <Bar dataKey="pos" fill="var(--color-pos)" stackId="current" radius={showEatclub ? [0,0,4,4] : 4} hide={!showPos} />
+          <Bar dataKey="eatclub" fill="var(--color-eatclub)" stackId="current" radius={showPos ? [4,4,0,0] : 4} hide={!showEatclub} />
+          <Bar dataKey="laborCost" fill="var(--color-laborCost)" radius={4} hide={!showLaborCost} />
 
-        {showPrevious && (
-          <>
-            <Bar dataKey="posPrev" fill="var(--color-posPrev)" stackId="prev" radius={showEatclub ? [0,0,4,4] : 4} hide={!showPos} />
-            <Bar dataKey="eatclubPrev" fill="var(--color-eatclubPrev)" stackId="prev" radius={showPos ? [4,4,0,0] : 4} hide={!showEatclub} />
-            <Bar dataKey="laborCostPrev" fill="var(--color-laborCostPrev)" radius={4} hide={!showLaborCost} />
-          </>
-        )}
-      </BarChart>
-    </ChartContainer>
+          {showPrevious && (
+            <>
+              <Bar dataKey="posPrev" fill="var(--color-posPrev)" stackId="prev" radius={showEatclub ? [0,0,4,4] : 4} hide={!showPos} />
+              <Bar dataKey="eatclubPrev" fill="var(--color-eatclubPrev)" stackId="prev" radius={showPos ? [4,4,0,0] : 4} hide={!showEatclub} />
+              <Bar dataKey="laborCostPrev" fill="var(--color-laborCostPrev)" radius={4} hide={!showLaborCost} />
+            </>
+          )}
+
+          <EventImpactMarkers
+            data={chartData}
+            showPos={showPos}
+            showEatclub={showEatclub}
+            showLaborCost={showLaborCost}
+            showPrevious={showPrevious}
+          />
+        </BarChart>
+      </ChartContainer>
+      <div className="flex items-center justify-center gap-4 pt-2 text-base text-muted-foreground">
+        <div className="flex items-center gap-1.5">
+          <TrendingUp className="size-4 text-green-600" />
+          <span>Positive Event Impact</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <TrendingDown className="size-4 text-red-600" />
+          <span>Negative Event Impact</span>
+        </div>
+      </div>
+    </>
   )
 }
