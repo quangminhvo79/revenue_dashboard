@@ -24,7 +24,7 @@ module Api
 
     def order_by_period(end_date)
       start_date = end_date - DEFAULT_PERIOD.days
-      Order.where(date: (start_date..end_date))
+      Order.where(date: (start_date..end_date), status: :completed)
     end
 
     def timesheet_by_period(end_date)
